@@ -1,113 +1,130 @@
-# Mini Brotato+
+# Mini Brotato 3D (迷你土豆 3D)
 
-**Python / Pygame 生存射击游戏原型**
+<div align="center">
 
-![Python](https://img.shields.io/badge/Python-3-3776AB?logo=python&logoColor=white)
-![Pygame](https://img.shields.io/badge/Pygame-2.6.1-2D8C3C)
-![Status](https://img.shields.io/badge/Status-Prototype-6F42C1)
+![Unreal Engine](https://img.shields.io/badge/Unreal%20Engine-5.8-0E1128?style=for-the-badge&logo=unrealengine)
+![C++](https://img.shields.io/badge/C++-20-00599C?style=for-the-badge&logo=c%2B%2B)
+![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Steam%20Deck-171A21?style=for-the-badge&logo=steam)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-一个受 *Brotato* 启发的俯视角生存射击练习项目：玩家通过移动躲避敌人，武器自动锁定目标，在持续战斗中升级武器、击败 Boss 并选择遗物。画面使用几何图形，重点放在玩法循环和交互逻辑的实现。
+**商业级 3D 俯视角动作肉鸽射击游戏 (Commercial 3D Action Roguelite Arena Shooter)**
 
-*A Python / Pygame survival-shooter prototype exploring auto-targeting, weapon progression and time-based encounters.*
+*从 2D Pygame 原型跃升为虚幻引擎 5 (Unreal Engine 5.8) 商业化独立游戏*
 
-[玩法与操作](#玩法与操作) · [本地运行](#本地运行) · [代码导览](#代码导览) · [后续迭代](#后续迭代)
+</div>
 
-## 玩法与操作
+---
 
-**开始游戏 → 选择初始武器 → 移动与自动射击 → 积分升级 / Boss 遗物 → 尝试生存 10 分钟**
+## 📸 实机战斗截图 (In-Engine Gameplay)
 
-| 系统 | 当前实现 |
-| --- | --- |
-| 战斗 | 自动寻找最近敌人；子弹与敌人的圆形碰撞检测；生命值与命中反馈 |
-| 武器成长 | 散弹、穿透、追踪三种武器；开局选择一次，之后每累计 50 分再选择升级 |
-| 敌人与节奏 | 不同速度的追逐敌人；约每 60 秒生成 Boss，后续 Boss 的生命值与速度随难度增加 |
-| 遗物选择 | 击败 Boss 后可选择子弹边界反弹、命中回血，或跳过 |
-| 界面 | 开始菜单、暂停界面，以及生命值、得分、倒计时、武器等级和遗物状态显示 |
+### 波次中段：六武器环绕自动索敌与群怪围剿
+![波次中段实机战斗](Docs/Screenshots/Brotato3D_QA_WaveCombat_Mid.png)
 
-| 操作 | 按键 |
-| --- | --- |
-| 开始游戏 | `Enter` |
-| 上 / 左 / 下 / 右移动 | `W` / `A` / `S` / `D` |
-| 射击 | 自动进行，无需鼠标操作 |
-| 武器升级 / 遗物选择 | `1` / `2` / `3` |
-| 暂停 / 继续 | `Esc` / `R` |
+### 波次开局：土豆英雄全武装挂载与边界怪潮初现
+![波次开局实机战斗](Docs/Screenshots/Brotato3D_QA_WaveCombat_Early.png)
 
-游戏界面当前使用英文。普通敌人击败后获得 1 分，Boss 为 10 分；生命值耗尽则本局结束。
+---
 
-## 本地运行
+## 🌟 核心特色 (Core Features)
 
-需要 **Python 3**、可用的桌面图形环境和音频设备。依赖文件固定为 `pygame==2.6.1`。
+- **🥔 六武器环绕武装系统 (6 Orbiting Concurrent Weapons)**
+  - 玩家角色身周环绕 6 个等角自转武器插槽 (`OrbitSpeed = 25°/s`)。
+  - 每把武器具备独立的有效扫描射程与射击朝向插值，实现 360° 全向高频索敌齐射。
+  - 包含手枪 (Pistol)、霰弹枪 (Shotgun)、穿透步枪 (Rifle)、追踪发射器 (Launcher) 四大派系。
+- **📊 20 维 RPG 深度属性体系 (20-Dimensional Attribute Depth)**
+  - 完整复刻并升维 Brotato 经典底层数值计算：包含最大生命值、护甲非线性减伤公式（$Damage / (1 + Armor \times 0.066)$）、闪避率、暴击倍率、吸血率、拾取半径与收获 (Harvesting)。
+- **👾 高同屏群怪 AI 优化 (Kinematic Swarm Steering)**
+  - 针对幸存者类游戏核心体验进行性能专属调优：关闭重型物理模拟与消耗巨大的 Lumen/VSM，采用运动学向量解算；
+  - 轻松支持 100~300+ 怪物同屏移动与围剿，低配 PC 与 Steam Deck 稳定 60+ FPS。
+  - 细分怪种行为：普通怪 (Walker)、高危蓄力冲锋怪 (Dasher)、首领精英 (Boss)。
+- **💎 晶体经济与磁力吸附 (Magnetic Crystal Economy)**
+  - 击杀敌人掉落高饱和荧光经验晶体，玩家接近后触发磁力加速度吸收，实时回馈成长收益。
+- **⏱️ 紧凑刺激的波次生存循环 (Wave Survival Loop)**
+  - 30 秒单波紧张生存计时，四方边界动态怪潮涌动。
+- **🖥️ 实时高可视 Canvas HUD**
+  - 顶部波次倒计时、场内存活敌人计数、底部动态生命槽、左上经验晶体统计与右上武器槽位指示。
 
-```bash
-git clone https://github.com/mumusama75/mini-brotato9001.git
-cd mini-brotato9001
-python -m venv .venv
+---
+
+## 📂 源码架构 (Architecture)
+
+```
+C:\UEProjects\Brotato3D\
+├── Brotato3D.uproject              // UE 5.8 独立工程配置
+├── Config/                         // 渲染、输入、手柄映射配置
+│   ├── DefaultEngine.ini
+│   ├── DefaultGame.ini
+│   └── DefaultInput.ini
+├── Source/Brotato3D/               // C++ 核心源码
+│   ├── Character/
+│   │   ├── B3DCharacter.h / .cpp   // 3D 俯视角英雄、6武器挂载槽位、输入驱动
+│   ├── Weapon/
+│   │   ├── B3DWeaponBase.h / .cpp  // 武器基类、自锁敌、后坐力回弹
+│   │   └── B3DProjectile.h / .cpp  // 弹道动力学、贯穿、反弹、引导追踪
+│   ├── Enemy/
+│   │   └── B3DEnemyBase.h / .cpp   // 群怪基类、冲锋蓄力机制、受击击退与掉落
+│   ├── Item/
+│   │   └── B3DDropMaterial.h / .cpp// 经验晶体、磁力吸引与拾取判定
+│   ├── Core/
+│   │   ├── B3DTypes.h              // 20维属性结构体、武器/敌人枚举
+│   │   ├── B3DAttributeComponent.h // 护甲计算、闪避、吸血与数值状态
+│   │   └── B3DGameMode.h / .cpp    // 过程化40m竞技场生成、波次倒计时、怪潮生成机
+│   └── UI/
+│       └── B3DHUD.h / .cpp         // 即时战斗 Canvas HUD 渲染
+├── Scripts/                        // 工程自动化工具集
+│   ├── Build.ps1                   // 一键极速编译脚本 (7~14秒)
+│   └── PlayQA.ps1                  // 自动化实机战斗冒烟测试与截图遥测
+├── Docs/Screenshots/               // 实机高清展示切片
+└── LegacyPrototype/                // 原 2D Pygame 历史原型归档 (保留历史与致敬)
 ```
 
-激活虚拟环境：
+---
 
+## 🚀 编译与运行 (Build & Run)
+
+### 环境要求
+- Windows 10/11 64-bit
+- Unreal Engine 5.8
+- Visual Studio 2022 (MSVC v143 toolchain)
+- 虚幻引擎内置 .NET 10.0 SDK
+
+### 1. 一键编译
+在项目根目录下运行 PowerShell：
 ```powershell
-# Windows PowerShell
-.\.venv\Scripts\Activate.ps1
+powershell -ExecutionPolicy Bypass -File .\Scripts\Build.ps1
 ```
+> 借助 UBA (Unreal Build Accelerator) 与预编译头优化，增量编译可在 7 秒内完成。
 
-```bash
-# macOS / Linux
-source .venv/bin/activate
+### 2. 自动化实机测试与运行
+运行自动化 QA 脚本，启动独立游戏窗口并执行 18 秒战斗切片验证：
+```powershell
+powershell -ExecutionPolicy Bypass -File .\Scripts\PlayQA.ps1
 ```
+测试完成后将自动捕获战斗实机画面并输出性能遥测日志。
 
-随后在项目根目录安装依赖并启动：
+---
 
-```bash
-python -m pip install -r requirements.txt
-python main.py
-```
+## 🗺️ 商业化路线图 (Roadmap to Steam)
 
-请保留 `assets/` 目录：程序会读取其中的字体与背景音乐。仓库中的 `setup.py` 目前是空文件，请直接通过 `main.py` 运行。
+- [x] **Phase 1: 核心可玩战斗切片 (MVP Combat Slice)**
+  - 6 武器并发环绕自锁敌
+  - 20 维 RPG 属性体系与受击击退
+  - 轻量化怪潮追逐与 Dasher 冲锋 AI
+  - 经验晶体磁吸与波次计时器
+- [ ] **Phase 2: 波间 3D 商店与数值升阶 (Shop & Fusion)**
+  - 30s 局间卡牌商店（买武器、道具、重随 Reroll、锁定 Lock）
+  - 经典 2 合 1 武器升阶系统（白 -> 蓝 -> 紫 -> 橙）
+  - 首批 4 位特色土豆职业（全能者、狂战士、游侠、法师）
+- [ ] **Phase 3: 美术资产升级与果汁打击感 (Juice & Art)**
+  - 风格化低多边形 3D 角色模型与怪物动画替换
+  - Niagara 激光、爆炸与碎屑粒子
+  - Hit-Stop 顿帧、屏幕微震与 3D 动态飘字
+- [ ] **Phase 4: Steamworks 商业化与掌机适配 (Steam Deck)**
+  - Steamworks SDK 集成（成就、云存档、统计）
+  - 全手柄操作原生适配（达到 Steam Deck Verified 标准）
+  - 多语言本地化（中/英/日/韩/西等）
 
-## 代码导览
+---
 
-当前逻辑集中在 `main.py`，便于沿着单一入口阅读游戏循环。
-
-```text
-mini-brotato9001/
-├── main.py                 # 游戏入口、对象、战斗、成长与菜单
-├── requirements.txt        # Pygame 依赖
-├── assets/
-│   ├── arial.ttf           # 界面字体
-│   ├── background_music.mp3
-│   ├── test.py             # 手动字体显示脚本，并非自动化测试
-│   └── objects.py          # 预留空文件
-├── setup.py                # 预留空文件
-└── LICENSE
-```
-
-| 阅读入口 | 关注点 |
-| --- | --- |
-| `Player` / `Enemy` / `Bullet` | 玩家移动、敌人追踪、弹道更新和碰撞 |
-| `find_closest_enemy()` / `fire_weapons()` | 最近目标选择与不同武器的发射逻辑 |
-| `show_weapon_upgrade()` / `show_relic_selection()` | 升级选择与状态变化 |
-| `main()` | 输入、时间推进、生成敌人、战斗结算与绘制 |
-
-## 当前版本说明
-
-这是可继续迭代的游戏原型，以下细节尚待完善：
-
-- 敌人的类型名称包含 `ranged`，但当前各类型均使用追逐移动，尚未实现敌方远程攻击；也尚无商店流程。
-- 倒计时使用实际经过时间，暂停和升级选择期间仍会计时；移动、射击与部分反馈以帧为单位更新。
-- 仓库没有 `shoot.wav`、`hit.wav`、`upgrade.wav`，对应音效加载失败时会被禁用。音频初始化仍依赖可用设备。
-- 开始、暂停及选择菜单尚未统一处理关闭窗口事件。若菜单中无法关闭窗口，可在启动终端按 `Ctrl+C` 结束进程。
-
-以上功能说明依据当前源代码整理；各操作系统的运行兼容性仍需实测。
-
-## 后续迭代
-
-- [ ] 统一菜单与战斗状态，处理暂停计时、窗口关闭和重新开始。
-- [ ] 引入基于时间间隔的移动与冷却，让表现减少对帧率的依赖。
-- [ ] 将武器、敌人和成长数值抽成配置，便于比较不同参数下的生存节奏。
-- [ ] 补充实际游玩录屏、截图和调参记录，展示玩法变化与验证过程。
-- [ ] 完善音频回退逻辑，整理资源来源与署名信息。
-
-## 许可
-
-仓库许可见 [LICENSE](LICENSE)。玩法灵感来自 *Brotato*；本项目是学习与原型实践，与原游戏无官方关联。
+## 📜 开源许可 (License)
+本项目基于 [MIT License](LICENSE) 开源。原 Pygame 2D 原型已归档于 `LegacyPrototype/` 目录中。

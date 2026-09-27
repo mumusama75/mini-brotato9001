@@ -1,0 +1,29 @@
+# Unreal Engine Standard Ignores
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+!Saved/QA/*.png
+
+# Visual Studio & IDE Artifacts
+.vs/
+.idea/
+.vscode/
+*.sln
+*.suo
+*.user
+*.opendb
+*.opensdf
+*.sdf
+*.xcodeproj
+*.xcworkspace
+
+# OS Artifacts
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Python Caches (Legacy Prototype)
+__pycache__/
+*.pyc
+*.pyo
